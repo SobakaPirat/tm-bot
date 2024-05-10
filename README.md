@@ -1,6 +1,6 @@
-# PIWO-bot
+# TM-bot
 
-PIWO-bot is a Discord bot created for the PIWO Trackmania Team Discord server.
+TM-bot is a Discord bot created for the russian trackmania community Discord server.
 
 ## Features
 * Database of team players & rosters
