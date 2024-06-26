@@ -227,22 +227,6 @@ get_player_time =   """
                     AND player_id = ?
                     """
 
-add_to_teaminfo =       """ INSERT INTO TeamInfo(name, info)
-                            VALUES(?,?) 
-                                ON CONFLICT (name) DO
-                                UPDATE SET info=excluded.info """
-
-remove_teaminfo =       """ DELETE FROM TeamInfo
-                            WHERE name=? COLLATE NOCASE"""
-
-get_teaminfo =          """ SELECT info
-                            FROM TeamInfo
-                            WHERE name=? COLLATE NOCASE"""
-
-get_teaminfo_list =     """ SELECT name, info
-                            FROM TeamInfo
-                        """
-
 add_twitch_channel =    """ INSERT INTO TwitchChannel(name)
                             VALUES(?)
                         """
