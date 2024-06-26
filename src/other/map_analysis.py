@@ -3,7 +3,6 @@ from dotenv import find_dotenv, load_dotenv, get_key
 import time
 import re
 
-from src.gsheet import google_sheet_write, google_sheet_write_batch
 from src.ubi.authentication import authenticate, check_token_refresh, get_nadeo_access_token
 from src.commands.map import get_map_records, format_map_record
 

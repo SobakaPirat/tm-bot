@@ -238,16 +238,6 @@ get_twitch_list =       """ SELECT name
                             FROM TwitchChannel
                         """
 
-add_gsheet =            """INSERT INTO GoogleSheet(sheet_name, sheet_number, tournament_id)
-                           VALUES(?,?,?)
-                        """
-remove_gsheet =         """ DELETE FROM GoogleSheet
-                            WHERE sheet_name=? COLLATE NOCASE"""
-
-get_gsheet =            """ SELECT sheet_name, sheet_number
-                            FROM GoogleSheet
-                            WHERE tournament_id=?"""
-
 def open_conn():
     conn = sqlite3.connect(db_file)
     conn.execute("PRAGMA foreign_keys = 1")

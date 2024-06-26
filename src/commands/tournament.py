@@ -10,7 +10,6 @@ from interactions import (
 import src.db.db as db
 from src.db.db import get_tournament_db_id
 from dotenv import find_dotenv, load_dotenv, get_key
-from src.gsheet import google_sheet_write, google_sheet_write_batch
 from src.ubi.authentication import get_nadeo_access_token
 from src.commands.map import get_map_records, format_map_record
 from src.other.map_analysis import get_map_infos, get_map_leaderboard_info
@@ -97,75 +96,6 @@ class Tournament(Extension):
             await ctx.send(f"Error occurred while running command: {e}", ephemeral=True)
         finally:
             conn.close() 
-
-    @slash_command(
-        name="tournament",
-        sub_cmd_name="gsheet_add",
-        sub_cmd_description="Register a google sheet to a tournament.",
-        dm_permission=False
-    )
-    @slash_option(
-        name="tournament",
-        description="Name of the tournament",
-        required=True,
-        opt_type = OptionType.STRING
-    )
-    @slash_option(
-        name="sheet_name",
-        description="Name of the sheet",
-        required=True,
-        opt_type = OptionType.STRING
-    )
-    @slash_option(
-        name="sheet_number",
-        description="Number of the sheet to send data to. 0 = first sheet, 1 = second, and so on.",
-        required=True,
-        opt_type = OptionType.INTEGER
-    )
-    async def gsheet_add(self, ctx: SlashContext, tournament: str, sheet_name: str, sheet_number: int):
-
-        conn = db.open_conn()
-
-        try:
-
-            tournament_id = get_tournament_db_id(conn, tournament)
-            if(tournament_id == None):
-                await ctx.send(f"Error occurred while running command: Tournament not found", ephemeral=True)
-                return
-
-            query = [(db.add_gsheet, (sheet_name, sheet_number, tournament_id))]
-            db.execute_queries(conn, query)
-            res = "Added google sheet: " + sheet_name + ", with data sheet number: " + str(sheet_number) + ", to tournament: " + tournament
-
-            # always send reply
-            await ctx.send(f"{res}")
-
-        except Exception as e:
-            await ctx.send(f"Error occurred while running command: {e}", ephemeral=True)
-
-        finally:
-            conn.close() 
-
-    @slash_command(
-        name="tournament",
-        sub_cmd_name="gsheet_update",
-        sub_cmd_description="Update the google sheet for a tournament. Also updates the tournament map times.",
-        dm_permission=False
-    )
-    @slash_option(
-        name="tournament",
-        description="Name of the tournament",
-        required=True,
-        opt_type = OptionType.STRING
-    )
-    async def gsheet_update(self, ctx: SlashContext, tournament: str):
-
-        await ctx.defer()
-
-        update_tournament_times(tournament)
-
-        (res, ephemeral) = update_sheet(tournament)
-        await ctx.send(f"{res}", ephemeral=ephemeral)
 
 
 def update_tournament_times(tournament):
