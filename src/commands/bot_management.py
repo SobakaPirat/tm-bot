@@ -130,7 +130,6 @@ class BotManagement(Extension):
         required=True,
         opt_type = OptionType.STRING,
         choices=[
-            SlashCommandChoice(name="twitter_channel_id", value="twitter_channel_id"),
             SlashCommandChoice(name="twitch_channel_id", value="twitch_channel_id"),
             SlashCommandChoice(name="cotd_channel_id", value="cotd_channel_id"),
             SlashCommandChoice(name="roster_channel_id", value="roster_channel_id"),
@@ -149,8 +148,6 @@ class BotManagement(Extension):
         load_dotenv(dotenv_path)
 
         match action:
-            case "twitter_channel_id":
-                set_key(dotenv_path, "DISCORD_TWITTER_CHANNEL", value)
             case "twitch_channel_id":
                 set_key(dotenv_path, "DISCORD_TWITCH_CHANNEL", value)
             case "cotd_channel_id":
