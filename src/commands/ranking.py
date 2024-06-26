@@ -58,7 +58,7 @@ def get_trophy_counts():
 
     # Get player ids from db
     conn = db.open_conn()
-    query = (db.get_specific_roster_players, ["cotd"])
+    query = [db.get_test_players, None]
     cotd_players = db.retrieve_data(conn, query)
     conn.close()
 
@@ -108,7 +108,7 @@ def get_mm_ranks():
 
     # Get player ids from db
     conn = db.open_conn()
-    query = (db.get_specific_roster_players, ["cotd"])
+    query = [db.get_test_players, None]
     cotd_players = db.retrieve_data(conn, query)
     conn.close()
 

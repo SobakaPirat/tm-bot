@@ -58,7 +58,7 @@ class Cotd(Extension):
         print("with id: " + totd_id)
 
         conn = db.open_conn()
-        query = (db.get_specific_roster_players, ["cotd"])
+        query = [db.get_test_players, None]
         cotd_players = db.retrieve_data(conn, query)
         conn.close()
 
@@ -260,7 +260,7 @@ def get_cotd_ko_results(tryagain=True):
 
             # Get cotd players
             conn = db.open_conn()
-            query = (db.get_specific_roster_players, ["cotd"])
+            query = [db.get_test_players, None]
             cotd_players = db.retrieve_data(conn, query)
             conn.close()
 
@@ -322,7 +322,7 @@ def format_cotd_ko_results(map_name, results):
 def get_cotd_quali_results():
 
     conn = db.open_conn()
-    query = (db.get_specific_roster_players, ["cotd"])
+    query = [db.get_test_players, None]
     cotd_players = db.retrieve_data(conn, query)
     conn.close()
 

@@ -29,6 +29,10 @@ get_specific_roster_players = """   SELECT Player.nickname, Player.account_id
                                     ORDER BY Player.nickname
                                 """
 
+get_test_players =          """ SELECT nickname, account_id
+                                FROM Player 
+                                ORDER BY (Player.nickname) """
+
 get_roster_players =    """ SELECT Player.nickname, Player.account_id, Roster.name
                             FROM Participant
                             JOIN Player ON Participant.player_id = Player.id
