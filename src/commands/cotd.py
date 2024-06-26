@@ -132,9 +132,8 @@ class Cotd(Extension):
             return
 
         (_, _, map_name) = get_totd_map_info()
-        
-        embed = format_cotd_quali_results(map_name, results)
 
+        embed = format_cotd_quali_results(map_name, results)
         #await ctx.send("Posting cotd quali results:")
         print("Sending cotd quali results to channel")
         await ctx.send(embed=embed)
@@ -163,7 +162,6 @@ class Cotd(Extension):
         (_, _, map_name) = get_totd_map_info()
         
         embed = format_cotd_ko_results(map_name, results)
-
         #await ctx.send("Posting cotd quali results:")
         print("Sending cotd KO results to channel")
         await ctx.send(embed=embed)
@@ -316,9 +314,9 @@ def format_cotd_ko_results(map_name, results):
 
     field_name = '\u200b'
     embed.add_field(name=field_name, value=everything, inline=True)
-
+    print(embed)
     return embed
-
+    
 
 # Players have to be in the roster "cotd" to be included in results
 def get_cotd_quali_results():
@@ -431,17 +429,13 @@ def get_all_cotd_players():
     (challenge_id, _) = get_cotd_ids()
     if(challenge_id == None):
         return None
+    
     #challenge_id = 7169 # main cotd 2024-01-23 
-
-    top100 = get_cotd_players(challenge_id, 100, 0)
-    time.sleep(1)
-    top101_200 = get_cotd_players(challenge_id, 100, 100)
-    time.sleep(1)
-    top201_300 = get_cotd_players(challenge_id, 100, 200)
-    time.sleep(1)
-    top301_320 = get_cotd_players(challenge_id, 20, 300)
-
-    return top100 + top101_200 + top201_300 + top301_320
+    top1000=[]
+    for cotd_request in range(10):
+        top1000.extend(get_cotd_players(challenge_id, 100, cotd_request*100))
+        time.sleep(1.5)
+    return top1000
 
 
 # Gets 'length' cotd players from the Nadeo leaderboards.
@@ -547,7 +541,7 @@ def get_cotd_matches(rounds_id):
 
     complete_url = competition_matches_url + \
                     str(rounds_id) + \
-                    "/matches?length=5&offset=0"
+                    "/matches?length=16&offset=0" #Первые 16 дивизионов
     
     dotenv_path = find_dotenv()
     load_dotenv(dotenv_path)
