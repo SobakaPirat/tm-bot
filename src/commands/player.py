@@ -37,25 +37,19 @@ class Player(Extension):
         opt_type = OptionType.STRING
     )
     @slash_option(
-        name="official_roster",
-        description="Is the player part of an official PIWO roster?",
-        required=False,
-        opt_type = OptionType.STRING
-    )
-    @slash_option(
         name="extra",
         description="If the player is captain, etc.",
         required=False,
         opt_type = OptionType.STRING
     )
     async def add(self, ctx: SlashContext, nickname: str, account_id: str, 
-                         country: str = None, official_roster: str = None, extra: str = None):
+                         country: str = None, extra: str = None):
 
         conn = db.open_conn()
 
         try:
 
-            query = [(db.add_player, (nickname, account_id, country, official_roster, extra))]
+            query = [(db.add_player, (nickname, account_id, country, extra))]
             db.execute_queries(conn, query)
             res = "Added player: " + nickname
 
@@ -186,7 +180,6 @@ class Player(Extension):
             SlashCommandChoice(name="nickname", value="nickname"),
             SlashCommandChoice(name="account_id", value="account_id"),
             SlashCommandChoice(name="country", value="country"),
-            SlashCommandChoice(name="official_roster", value="official_roster"),
             SlashCommandChoice(name="extra", value="extra")        ]
     )
     @slash_option(
@@ -213,10 +206,6 @@ class Player(Extension):
                     query = [(db.update_player_country, (value, nickname))]
                     db.execute_queries(conn, query)
                     res = "Updated country for player: " + nickname + "," + value
-                case "official_roster":
-                    query = [(db.update_player_official_roster, (value, nickname))]
-                    db.execute_queries(conn, query)
-                    res = "Updated official_roster for player: " + nickname + "," + value
                 case "extra":
                     query = [(db.update_player_extra, (value, nickname))]
                     db.execute_queries(conn, query)
@@ -243,13 +232,11 @@ def format_player_list(players):
 
     value = ""
 
-    for i, (player, country, roster) in enumerate(players, start=1):
+    for i, (player, country) in enumerate(players, start=1):
 
         if (country is None):
             country = "None"
-        if (roster is None):
-            roster = "None"
-        value += player + ", " + country + ", " + roster + "\n"
+        value += country + " " + player + "\n"
 
         # Have we almost reached the embed value limit?
         if(len(value) >= 900):
@@ -272,19 +259,16 @@ def format_player(player):
     embed = Embed()
     embed.title = "Player info"
 
-    (nickname, account_id, country, official_roster) = player[0]
+    (nickname, account_id, country) = player[0]
     if (account_id is None):
         account_id = "None"
     if (country is None):
         country = "None"
-    if (official_roster is None):
-        official_roster = "None"
 
     value = ""
     value += "Nickname: " + nickname + "\n"
     value += "Account id: " + account_id + "\n"
     value += "Country: " + country + "\n"
-    value += "Official roster: " + official_roster
 
     embed.add_field(name="\u200b", value=value, inline=False)
 

@@ -7,7 +7,6 @@ from interactions import (
     Embed
 )
 import src.db.db as db
-from src.db.db import get_tournament_db_id
 
 import requests
 from dotenv import find_dotenv, load_dotenv, get_key

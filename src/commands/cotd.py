@@ -390,8 +390,8 @@ def format_totd_leaderboard(map_name, players):
     embed.description = "Map: " + map_name
 
     #Format everything nicely inside a code block
-    header_format = "{:^3s} {:^15s} {:^16s} \n"
-    format =        "{:^3s} {:15s} {:^16s} \n"
+    header_format = "{:^3s} {:^16} {:^16s} \n"
+    format =        "{:^3s} {:16s} {:^16s} \n"
 
     everything = "```\n"
     
@@ -415,20 +415,14 @@ def format_totd_leaderboard(map_name, players):
     return embed
 
 
-# Retrieves all cotd players that got div5 or better in quali
-#   (div5 or better is 64*5=320 people)
-# This function can be quite slow due to sleeps
-def get_all_cotd_players():
+# Retrieves all cotd players that got top 1000 in quali
 
-    # Let's say div5 or better, so 320 players
-    # We need 4 requests, 100 + 100 + 100 + 20
-    # Adding some sleeps in between requests.
+def get_all_cotd_players():
 
     (challenge_id, _) = get_cotd_ids()
     if(challenge_id == None):
         return None
     
-    #challenge_id = 7169 # main cotd 2024-01-23 
     top1000=[]
     for cotd_request in range(10):
         top1000.extend(get_cotd_players(challenge_id, 100, cotd_request*100))
