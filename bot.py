@@ -23,6 +23,7 @@ bot = Client(
 
 # Load all extensions
 extensions = [m.name for m in pkgutil.iter_modules(["src/commands"], prefix="src.commands.")]
+print(extensions)
 for extension in extensions:
     bot.load_extension(extension)
 

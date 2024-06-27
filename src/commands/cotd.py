@@ -15,7 +15,7 @@ from interactions.api.events import Startup
 
 import src.db.db as db
 from src.ubi.authentication import get_nadeo_access_token
-from src.commands.map import get_map_records, get_map_data, format_map_record
+from src.other.map import get_map_records, get_map_data, format_map_record
 
 from dotenv import find_dotenv, load_dotenv, get_key, set_key
 import requests

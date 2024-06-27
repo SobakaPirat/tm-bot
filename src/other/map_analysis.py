@@ -4,7 +4,7 @@ import time
 import re
 
 from src.ubi.authentication import authenticate, check_token_refresh, get_nadeo_access_token
-from src.commands.map import get_map_records, format_map_record
+from src.other.map import get_map_records, format_map_record
 
 #import src.other.data as data
 
