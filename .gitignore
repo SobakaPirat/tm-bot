@@ -6,7 +6,7 @@ main.py
 *.txt
 *.json
 src/other/data.py
-test.sql
+Russian_community.sql
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
