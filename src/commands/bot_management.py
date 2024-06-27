@@ -131,9 +131,7 @@ class BotManagement(Extension):
         opt_type = OptionType.STRING,
         choices=[
             SlashCommandChoice(name="twitch_channel_id", value="twitch_channel_id"),
-            SlashCommandChoice(name="cotd_channel_id", value="cotd_channel_id"),
-            SlashCommandChoice(name="roster_channel_id", value="roster_channel_id"),
-            SlashCommandChoice(name="roster_message_id", value="roster_message_id")
+            SlashCommandChoice(name="cotd_channel_id", value="cotd_channel_id")
         ]
     )
     @slash_option(
@@ -152,10 +150,6 @@ class BotManagement(Extension):
                 set_key(dotenv_path, "DISCORD_TWITCH_CHANNEL", value)
             case "cotd_channel_id":
                 set_key(dotenv_path, "DISCORD_COTD_CHANNEL", value)
-            case "roster_channel_id":
-                set_key(dotenv_path, "DISCORD_ROSTER_CHANNEL", value)
-            case "roster_message_id":
-                set_key(dotenv_path, "DISCORD_ROSTER_MESSAGE", value)
             case _:
                 await ctx.send("Invalid info name")
 
