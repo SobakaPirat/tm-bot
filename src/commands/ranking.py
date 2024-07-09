@@ -43,8 +43,11 @@ class Ranking(Extension):
     @cooldown(Buckets.CHANNEL, 1, 900)
     async def mm(self, ctx: SlashContext):
         players = get_mm_ranks()
-        embed = format_mm_leaderboard(players)
-        await ctx.send(embed=embed)
+        embeds = format_mm_leaderboard(players)
+        paginator = Paginator.create_from_embeds(self.bot, *embeds)
+        await paginator.send(ctx) 
+        #embed = format_mm_leaderboard(players)
+        #await ctx.send(embed=embed)
 
     
 
@@ -198,9 +201,10 @@ def format_trophy_leaderboard(players):
 
 def format_mm_leaderboard(players):
 
-    embed = Embed()
-    embed.title = "MM rankings"
-    field_name = '\u200b'
+    #embed = Embed()
+    embeds = []
+    #embed.title = "MM rankings"
+    #field_name = '\u200b'
 
     #Format everything nicely inside a code block
     # Pos WorldRank Player Score
@@ -210,7 +214,7 @@ def format_mm_leaderboard(players):
     value = ""
     value += "```\n"
     value += header_format.format("Pos", "World rank", "Player", "Score")
-    for i, player in enumerate(players, start=1):
+    for i, player in enumerate(players[0:139], start=1):
         
         (name, world_rank, score) = player
         pos = str(i) + "."
@@ -219,20 +223,20 @@ def format_mm_leaderboard(players):
         value += format.format(pos, world_rank, name, score)
 
         # Have we almost reached the embed value limit?
-        if(len(value) >= 900):
+        if(i%20 == 0):
             value += "```"
-            embed.add_field(name=field_name, value=value, inline=False)
-
+            #embed.add_field(name=field_name, value=value, inline=False)
+            embeds.append(Embed(title = "MM rankings", description=value)) 
             # Are there more players?
             if(i < len(players)):
                 value = ""
                 value += "```\n"
             else:
                 #If not, we can just return
-                return embed
+                return embeds
 
     value += "```"
-    embed.add_field(name=field_name, value=value, inline=False)
+    embeds.append(Embed(title = "MM rankings", description=value)) 
 
 
-    return embed
+    return embeds
