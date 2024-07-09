@@ -7,6 +7,7 @@ from interactions import (
     SlashCommandChoice,
     Embed
 )
+from interactions.ext.paginators import Paginator
 import src.db.db as db
 
 class Player(Extension):
@@ -112,10 +113,13 @@ class Player(Extension):
                 await ctx.send("Error retrieving players: No players found.", ephemeral=True)
                 return
             
-            embed = format_player_list(res)
-
+            embeds = format_player_list(res)
+            print(embeds)
+            paginator = Paginator.create_from_embeds(self.bot, *embeds)
+            print(paginator)
+            await paginator.send(ctx)
             # always send reply
-            await ctx.send(embed=embed, ephemeral=True)
+            #await ctx.send(embed=embed, ephemeral=True)
 
         except Exception as e:
             await ctx.send(f"Error occurred while running command: {e}", ephemeral=True)
@@ -225,10 +229,7 @@ class Player(Extension):
 
 def format_player_list(players):
 
-    embed = Embed()
-    embed.title = "List of all players:"
-    field_name = '\u200b'
-
+    embeds = []
 
     value = ""
 
@@ -239,20 +240,17 @@ def format_player_list(players):
         value += country + " " + player + "\n"
 
         # Have we almost reached the embed value limit?
-        if(len(value) >= 900):
-            embed.add_field(name=field_name, value=value, inline=False)
-
+        if(i%20 == 0):
+            embeds.append(Embed(title = "List of all players:", description=value))
             # Are there more players?
             if(i < len(players)):
                 value = ""
             else:
                 #If not, we can just return
-                return embed
+                return embeds
 
-    embed.add_field(name=field_name, value=value, inline=False)
-
-
-    return embed
+    embeds.append(Embed(title = "List of all players:", description=value))
+    return embeds
 
 def format_player(player):
 
