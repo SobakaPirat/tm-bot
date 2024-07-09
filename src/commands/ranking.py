@@ -8,7 +8,7 @@ from interactions import (
 )
 
 import src.db.db as db
-
+from interactions.ext.paginators import Paginator
 from dotenv import find_dotenv, load_dotenv, get_key
 import requests
 import json
@@ -28,8 +28,11 @@ class Ranking(Extension):
     @cooldown(Buckets.CHANNEL, 1, 3600)
     async def trophies(self, ctx: SlashContext):
         players = get_trophy_counts()
-        embed = format_trophy_leaderboard(players)
-        await ctx.send(embed=embed)
+        embeds = format_trophy_leaderboard(players)
+        paginator = Paginator.create_from_embeds(self.bot, *embeds)
+        await paginator.send(ctx)
+        #embed = format_trophy_leaderboard(players)
+        #await ctx.send(embed=embed)
 
     @slash_command(
         name="ranking",
@@ -152,9 +155,10 @@ def get_mm_ranks():
 
 def format_trophy_leaderboard(players):
 
-    embed = Embed()
-    embed.title = "Trophy rankings"
-    field_name = '\u200b'
+    #embed = Embed()
+    embeds = []
+    #embed.title = "Trophy rankings"
+    #field_name = '\u200b'
 
     #Format everything nicely inside a code block
     # Pos WorldRank Player Trophies
@@ -164,7 +168,7 @@ def format_trophy_leaderboard(players):
     value = ""
     value += "```\n"
     value += header_format.format("Pos", "World rank", "Player", "Trophies")
-    for i, player in enumerate(players, start=1):
+    for i, player in enumerate(players[0:139], start=1):
         
         (name, trophies, world_rank) = player
         pos = str(i) + "."
@@ -173,23 +177,24 @@ def format_trophy_leaderboard(players):
         value += format.format(pos, world_rank, name, trophies)
 
         # Have we almost reached the embed value limit?
-        if(len(value) >= 900):
+        if(i%20 == 0):
             value += "```"
-            embed.add_field(name=field_name, value=value, inline=False)
-
+            #embed.add_field(name=field_name, value=value, inline=False)
+            embeds.append(Embed(title = "Trophy rankings", description=value))
             # Are there more players?
             if(i < len(players)):
                 value = ""
                 value += "```\n"
             else:
                 #If not, we can just return
-                return embed
+                return embeds
 
     value += "```"
-    embed.add_field(name=field_name, value=value, inline=False)
+    embeds.append(Embed(title = "Trophy rankings", description=value))
+    #embed.add_field(name=field_name, value=value, inline=False)
 
 
-    return embed
+    return embeds
 
 def format_mm_leaderboard(players):
 

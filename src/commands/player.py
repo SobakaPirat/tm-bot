@@ -114,9 +114,7 @@ class Player(Extension):
                 return
             
             embeds = format_player_list(res)
-            print(embeds)
             paginator = Paginator.create_from_embeds(self.bot, *embeds)
-            print(paginator)
             await paginator.send(ctx)
             # always send reply
             #await ctx.send(embed=embed, ephemeral=True)
