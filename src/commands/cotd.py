@@ -362,15 +362,18 @@ def format_cotd_quali_results(map_name, results):
     everything = "```\n"
     everything += header_format.format("Div", "Rank", "Player", "Time")
 
+    field_name = '\u200b'
     for result in results:
         (name, rank, time) = result
         division = div(rank)
         everything += format.format(str(division), str(rank), name, time)
-        
+        if(len(everything) >= 900):
+            everything += "```"
+            embed.add_field(name=field_name, value=everything, inline=False)
+            everything = "```"
     everything += "```"
 
-    field_name = '\u200b'
-    embed.add_field(name=field_name, value=everything, inline=True)
+    embed.add_field(name=field_name, value=everything, inline=False)
 
     return embed
 
