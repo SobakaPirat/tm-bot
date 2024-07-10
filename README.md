@@ -3,7 +3,7 @@
 TM-bot is a Discord bot created for the russian trackmania community Discord server.
 
 ## Features
-* Database of players & rosters
+* Database of players
 * COTD qualification results, internal TOTD leaderboards
 * Twitch live notifications - choose which Twitch channels to follow, and get messages when those channels go live
 * and more
