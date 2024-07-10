@@ -11,7 +11,7 @@ db_init_sql = os.path.join(os.path.dirname(__file__), "template.sql")
 
 #TODO: Figure out a better way to do this
 
-get_test_players =          """ SELECT nickname, account_id
+get_players =          """ SELECT nickname, account_id
                                 FROM Player 
                                 ORDER BY (Player.nickname) """
 
@@ -54,55 +54,9 @@ get_player_id_by_account_id = """ SELECT id
                             FROM Player
                             WHERE account_id=? """
 
-get_map_id =            """ SELECT id
-                            FROM Map
-                            WHERE name=? COLLATE NOCASE"""
-
 get_map_uid =            """ SELECT uid
                             FROM Map
                             WHERE name=? COLLATE NOCASE"""
-
-get_map_db_id_by_map_id = """ SELECT id
-                            FROM Map
-                            WHERE uid=? """
-
-add_participant =       """ INSERT INTO Participant(player_id, roster_id)
-                            VALUES(?,?) """
-
-remove_participant =    """ DELETE FROM Participant
-                            WHERE player_id=? AND roster_id=? """
-
-add_time =              """ INSERT INTO Time(player_id, map_id, time)
-                            VALUES(?,?,?) 
-                                ON CONFLICT (player_id, map_id) DO
-                                UPDATE SET time=excluded.time"""
-
-get_n_map_times =       """ SELECT Player.nickname, Time.time  
-                            FROM Map
-                            JOIN Time ON Time.map_id = Map.id
-                            JOIN Player ON Player.id = Time.player_id
-                            WHERE Map.name=? COLLATE NOCASE
-                            ORDER BY LENGTH(Time.time) ASC, CAST (Time.time AS DECIMAL) ASC
-                            LIMIT ?
-                        """
-
-get_player_tournament_times =   """
-                                SELECT player_id, map_id, time
-                                FROM Time
-                                WHERE map_id IN
-                                    (SELECT map_id
-                                        FROM Mappack
-                                        WHERE tournament_id = ?
-                                    )
-                                AND player_id = ?
-                                """
-
-get_player_time =   """
-                    SELECT time
-                    FROM Time
-                    WHERE map_id = ?
-                    AND player_id = ?
-                    """
 
 add_twitch_channel =    """ INSERT INTO TwitchChannel(name)
                             VALUES(?)
