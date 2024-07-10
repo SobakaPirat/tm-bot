@@ -196,7 +196,7 @@ class Cotd(Extension):
         self.cotd_trigger.start()
         self.cotd_ko_trigger.start()
 
-    @Task.create(TimeTrigger(hour=17, minute=45)) #approximate cotd ko end time
+    @Task.create(TimeTrigger(hour=17, minute=50)) #approximate cotd ko end time
     async def cotd_ko_trigger(self):
 
         print("Cotd ko should be over now.")
@@ -217,6 +217,7 @@ class Cotd(Extension):
         embed = format_cotd_ko_results(map_name, results)
 
         print("Sending cotd KO results to channel")
+        time.sleep(2)        
         await channel.send(embed=embed)
 
 def get_cotd_ko_results(tryagain=True):
