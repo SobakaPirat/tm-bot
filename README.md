@@ -6,7 +6,7 @@ TM-bot is a Discord bot created for the russian trackmania community Discord ser
 * Database of players
 * COTD qualification results, internal TOTD leaderboards
 * Twitch live notifications - choose which Twitch channels to follow, and get messages when those channels go live
-* and more
+* Trophies and matchmaking ranking
 
 ## Self-host
 To host the bot yourself, ```git clone``` the repository to your machine, set up the .env file (example provided in .env_example), install the required libraries with ```pip install -r requirements.txt```, and finally start the bot with ```python3 bot.py```.
